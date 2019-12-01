@@ -4,6 +4,7 @@ import android.content.res.Resources
 import androidx.ui.graphics.imageFromResource
 import no.rogo.emptyfuel4.R
 import no.rogo.emptyfuel4.model.ImageItem
+import no.rogo.emptyfuel4.model.MutableImageItem
 
 /**
  * Created by Roar on 20.11.2019.
@@ -40,10 +41,13 @@ var imageBank = listOf(
     imageItem3
 )
 
-
+var mutableImageBank = mutableListOf<MutableImageItem>()
 
 fun getImageBank(imageBank: List<ImageItem>, resources: Resources): List<ImageItem>{
     return imageBank.map {
         it.copy( image = imageFromResource(resources, it.imageId))
     }
 }
+
+
+

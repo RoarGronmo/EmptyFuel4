@@ -9,7 +9,9 @@ import androidx.ui.material.MaterialTheme
 import androidx.ui.tooling.preview.Preview
 import no.rogo.emptyfuel4.data.getImageBank
 import no.rogo.emptyfuel4.data.imageBank
+import no.rogo.emptyfuel4.data.mutableImageBank
 import no.rogo.emptyfuel4.model.LocationData
+import no.rogo.emptyfuel4.model.MutableImageItem
 import no.rogo.emptyfuel4.ui.app.EmptyFuel4App
 
 class MainActivity : AppCompatActivity() {
@@ -18,6 +20,17 @@ class MainActivity : AppCompatActivity() {
         imageBank = getImageBank(
             imageBank,
             resources)
+
+        mutableImageBank.add(
+            MutableImageItem(
+                "0",
+                "Title 1",
+                null,
+                1,
+                null
+            )
+        )
+
 
         var deviceLocation = LocationData(61.89, 6.67)
 

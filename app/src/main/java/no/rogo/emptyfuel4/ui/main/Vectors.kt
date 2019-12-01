@@ -9,6 +9,7 @@ import androidx.ui.graphics.Color
 import androidx.ui.graphics.vector.DrawVector
 import androidx.ui.layout.Container
 import androidx.ui.material.ripple.Ripple
+import androidx.ui.res.imageResource
 import androidx.ui.res.vectorResource
 
 /**
@@ -29,6 +30,7 @@ fun VectorImageButton(@DrawableRes id:Int, onClick: () ->Unit)
 @Composable
 fun VectorImage(@DrawableRes id: Int, tint: Color = Color.Transparent){
     val vector = +vectorResource(id)
+
     WithDensity {
         Container(
             width = vector.defaultWidth.toDp(),
