@@ -3,4 +3,7 @@
     <color name="colorPrimary">#26A300</color>
     <color name="colorPrimaryDark">#265900</color>
     <color name="colorAccent">#FF4081</color>
+
+    <color name="enterprise_icon_background_color">#80FFFFFF</color>
+    <color name="card_background_lightgreen">#00FF00</color>
 </resources>

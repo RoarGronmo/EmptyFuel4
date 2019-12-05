@@ -4,9 +4,13 @@ package no.rogo.emptyfuel4.ui.screen.station
 import android.icu.text.SimpleDateFormat
 import android.util.Log
 import androidx.compose.Composable
+import androidx.compose.ambient
 import androidx.compose.memo
 import androidx.compose.unaryPlus
+import androidx.core.content.ContextCompat
+import androidx.core.graphics.toColor
 import androidx.ui.core.*
+import androidx.ui.engine.geometry.Offset
 import androidx.ui.foundation.DrawImage
 import androidx.ui.foundation.ScrollerPosition
 import androidx.ui.foundation.VerticalScroller
@@ -14,17 +18,19 @@ import androidx.ui.foundation.gestures.DragDirection
 import androidx.ui.foundation.shape.corner.RoundedCornerShape
 import androidx.ui.graphics.Color
 import androidx.ui.graphics.Image
+import androidx.ui.graphics.Shadow
 import androidx.ui.graphics.vector.DrawVector
 import androidx.ui.layout.*
-import androidx.ui.material.Button
-import androidx.ui.material.Divider
-import androidx.ui.material.MaterialTheme
-import androidx.ui.material.TopAppBar
+import androidx.ui.material.*
 import androidx.ui.material.surface.Card
 import androidx.ui.material.surface.Surface
 import androidx.ui.res.imageResource
+import androidx.ui.res.vectorResource
 import androidx.ui.semantics.SemanticsActions.Companion.OnClick
+import androidx.ui.text.font.FontFamily
+import androidx.ui.text.font.FontWeight
 import androidx.ui.text.style.TextAlign
+import androidx.ui.text.style.TextOverflow
 import androidx.ui.tooling.preview.Preview
 import no.rogo.emptyfuel4.R
 import no.rogo.emptyfuel4.data.imageBank
@@ -187,139 +193,257 @@ fun StationsScreen(deviceLocation: LocationData, openDrawer: () -> Unit)
 fun StationCard(mutableImageItem: MutableImageItem)
 {
 
-    val image = +imageResource(R.drawable.esso_icon)
-    val image2 = +imageResource(R.drawable.yx_icon)
+    val card_background_color =
+        Color(
+            ContextCompat.getColor(
+                +ambient(ContextAmbient),
+                R.color.card_background_lightgreen
+            )
+        )
+
+    val image = +imageResource(R.drawable.yx_icon)
+    val imagekind = +imageResource(R.drawable.ic_empty_kind_24dp_black)
 
     Padding(4.dp)
     {
-        Card (shape = RoundedCornerShape(5.dp))
+        Card (shape = RoundedCornerShape(5.dp),
+            color = card_background_color)
         {
-
             Column()
             {
-
-                var imageWidth: Int = image.width;
-                var imageHeight: Int = image.height;
-                var imageAspect: Double = image.width.toDouble()/image.height.toDouble()
-
-                var justWidth: Double = 0.0
-                var justHeight: Double = 0.0
-
                 FlexRow {
 
                     inflexible{
                         Padding(padding = 4.dp){
+                            Surface(
+                                shape = RoundedCornerShape(4.dp),
+                                color = Color(
+                                    ContextCompat.getColor(
+                                        +ambient(ContextAmbient),
+                                        R.color.enterprise_icon_background_color)
+                                )
+                            ) {
+                                Padding(padding = 4.dp) {
+                                    DrawImageFitCenter(
+                                        image = image,
+                                        containerWidth = 40.dp,
+                                        containerHeight = 40.dp
+                                    )
+                                }
+                            }
+                        }
+                    }
 
-                            Surface(color = Color.Blue)
+                    flexible(1f) {
+                        Column(
+                            mainAxisSize = LayoutSize.Expand,
+                            crossAxisSize = LayoutSize.Expand
+                        ) {
+                            Surface(color = Color.Transparent) {
+                                Text(
+                                    text = "Station Name",
+                                    style = +themeTextStyle { h6 },
+                                    maxLines = 2,
+                                    overflow = TextOverflow.Ellipsis)
+                                //Text(text = "Station Address",style = (+themeTextStyle { subtitle2 }).withOpacity(0.6f))
+                            }
+                            Surface(color = Color.Transparent){
+                                Text(
+                                    text = "Station Address, 0000 Location",
+                                    style = (+themeTextStyle { subtitle2 }).withOpacity(0.6f),
+                                    maxLines = 2,
+                                    overflow = TextOverflow.Ellipsis)
+                            }
+
+
+                        }
+
+                    }
+
+                    inflexible{
+
+                        Padding(right = 4.dp) {
+                            Column(
+                                mainAxisSize = LayoutSize.Expand,
+                                crossAxisSize = LayoutSize.Expand,
+                                crossAxisAlignment = CrossAxisAlignment.End
+                            ) {
+                                Surface(
+                                    color = Color.Transparent
+                                ){
+                                    Text(
+                                        text = "123,3 km",
+                                        style = (+themeTextStyle { caption })
+                                            .copy(
+                                                fontFamily = FontFamily.Monospace,
+                                                fontWeight = FontWeight.Bold)
+                                    )
+                                }
+                                Surface(color = Color.Transparent) {
+                                    Button(
+                                        onClick = {},
+                                        text = "DETAILS",
+                                        style = TextButtonStyle()
+                                    )
+                                }
+                            }
+                        }
+                    }
+                }
+
+                Padding(
+                    left = 4.dp,
+                    right = 4.dp
+                ){
+                    Divider()
+                }
+
+                FlexRow {
+
+                    flexible(1f) {
+                        Column(
+                            mainAxisSize = LayoutSize.Expand,
+                            crossAxisSize = LayoutSize.Expand,
+                            crossAxisAlignment = CrossAxisAlignment.Start
+                        ) {
+
+                            Padding(left = 4.dp, right = 4.dp)
                             {
-                                DrawImageFitCenter(
-                                    image = image,
-                                    containerWidthDp = 50,
-                                    containerHeightDp = 30
+
+                                Text(
+                                    text = "Country average",
+                                    style = (+themeTextStyle { subtitle2 })
+                                        .copy(
+                                            fontFamily = FontFamily.Monospace,
+                                            fontWeight = FontWeight.Bold
+                                        )
                                 )
                             }
-
                         }
-
                     }
 
-                    inflexible{
-                        Padding(padding = 4.dp){
+                    flexible(1f){
+                        Column(
+                            mainAxisSize = LayoutSize.Expand,
+                            crossAxisSize = LayoutSize.Expand,
+                            crossAxisAlignment = CrossAxisAlignment.End
+                        ){
 
-                            Surface(color = Color.Green) {
-                                DrawImageFitCenter(
-                                    image = image,
-                                    containerWidthDp = 30,
-                                    containerHeightDp = 50
+                            Padding(
+                                left = 4.dp,
+                                right = 4.dp
+                            ) {
+                                Text(
+                                    text = "Uncertain availability",
+                                    style = (+themeTextStyle { subtitle2 })
+                                        .copy(
+                                            fontFamily = FontFamily.Monospace,
+                                            fontWeight = FontWeight.Bold
+                                        )
                                 )
                             }
-
-
                         }
-
                     }
-                    inflexible{
-                        Padding(padding = 4.dp){
-
-                            Surface(color = Color.Yellow) {
-                                DrawImageFitCenter(
-                                    image = image2,
-                                    containerWidthDp = 50,
-                                    containerHeightDp = 30
-                                )
-
-                            }
-
-
-                        }
-
-                    }
-                    inflexible{
-                        Padding(padding = 4.dp){
-
-                            Surface(color = Color.White) {
-                                DrawImageFitCenter(
-                                    image = image2,
-                                    containerWidthDp = 30,
-                                    containerHeightDp = 50
-                                )
-                            }
-
-
-                        }
-
-                    }
-
-              
-
-                    expanded(1f)
-                    {
-                        WidthSpacer(width = 1.dp)
-                    }
-                    inflexible{
-                        Text(text = "Right")
-                    }
-
                 }
-                Divider()
-                FlexRow {
 
-                    inflexible {
-                        //Text(text = mutableImageItem.title?:"<Empty>")
-                        Text(text = "Left")
-                    }
-                    inflexible {
-                        Column {
-                            Text(text = "w=${imageWidth} h=${imageHeight}" +
-                                    " aspect=${imageAspect}")
-                            Text(text = "jw=${justWidth} jh=${justHeight}")
-
-
-
-                        }
-                        //Text(text = mutableImageItem.title?:"<Empty>")
-
-                    }
-
-                    expanded(1f)
-                    {
-                        WidthSpacer(width = 1.dp)
-                    }
-                    inflexible{
-                        Text(text = "Right")
-                    }
-
-
-
-                }
                 FlexRow{
+                    inflexible{
+                        Padding(padding = 4.dp){
+                            Surface(
+                                shape = RoundedCornerShape(4.dp),
+                                color = Color(
+                                    ContextCompat.getColor(
+                                        +ambient(ContextAmbient),
+                                        R.color.enterprise_icon_background_color)
+                                )
+                            ) {
+                                Padding(padding = 4.dp) {
+                                    DrawImageFitCenter(
+                                        image = imagekind,
+                                        containerWidth = 40.dp,
+                                        containerHeight = 40.dp
+                                    )
+                                }
+                            }
+                        }
+                    }
+                    flexible(1f) {
+                        Row(
+                            mainAxisSize = LayoutSize.Expand,
+                            crossAxisSize = LayoutSize.Expand
+                        ) {
+                            Surface(color = Color.Transparent) {
+                                Text(
+                                    text = "15,98",
+                                    style = (+themeTextStyle { h4 })
+                                        .copy(
+                                            fontFamily = FontFamily.Monospace,
+                                            fontWeight = FontWeight.Bold,
+                                            color = Color.Yellow,
+                                            shadow = Shadow(
+                                                color = Color.Gray,
+                                                offset = Offset(
+                                                    dx=5f,
+                                                    dy=5f
+                                                ),
+                                                blurRadius = 2.px
+                                            )
+                                        ),
+                                    maxLines = 1)
+                                //Text(text = "Station Address",style = (+themeTextStyle { subtitle2 }).withOpacity(0.6f))
+                            }
 
+                            Padding(left = 4.dp,top = 4.dp)
+                            {
+                                Column {
+                                    Text(
+                                        text = "NOK",
+                                        style = (+themeTextStyle { caption })
+                                            .copy(
+                                                fontFamily = FontFamily.Monospace,
+                                                fontWeight = FontWeight.Bold
+                                            )
+                                    )
+                                    Text(
+                                        text = "ltr",
+                                        style = (+themeTextStyle { caption })
+                                            .copy(
+                                                fontFamily = FontFamily.Monospace,
+                                                fontWeight = FontWeight.Bold
+                                            )
+                                    )
+                                }
+                            }
+                        }
+                    }
+                    inflexible {
+                        Padding(top = 4.dp, right = 4.dp) {
+
+                            Column(mainAxisSize = LayoutSize.Expand,
+                                crossAxisSize = LayoutSize.Expand,
+                                crossAxisAlignment = CrossAxisAlignment.End
+                            ) {
+                                Button(onClick = {},
+                                    style = ContainedButtonStyle()
+                                ){
+                                    Row(mainAxisSize = LayoutSize.Expand,
+                                        crossAxisAlignment = CrossAxisAlignment.Center
+                                    ){
+                                        VectorImage(id = R.drawable.ic_baseline_edit_24)
+                                        WidthSpacer(width = 16.dp)
+                                        Text(
+                                            text = "UPDATE",
+                                            style = +themeTextStyle { button })
+                                    }
+                                }
+
+                            }
+                        }
+                    }
                 }
             }
         }
     }
-
-
 }
 
 @Composable
@@ -332,44 +456,43 @@ fun StationCard(mutableImageItem: MutableImageItem)
 fun DrawImageFitCenter(
     image: Image,
     tint: Color? = null,
-    containerWidthDp: Int,
-    containerHeightDp: Int
+    containerWidth: Dp,
+    containerHeight: Dp
 ){
 
-    val imageWidth: Int = image.width
-    val imageHeight: Int = image.height
-    val imageAspect: Double = imageWidth.toDouble()/imageHeight.toDouble()
-    val containerAspect: Double = containerWidthDp.toDouble()/containerHeightDp.toDouble()
+    //val imageWidth = image.width.dp
+    //val imageHeight = image.height.dp
+    val imageAspect = image.width.dp.div(image.height.dp)
+    val containerAspect = containerWidth.div(containerHeight)
 
-    var justWidth: Double = 0.0
-    var justHeight: Double = 0.0
+    var justWidth = 0.0.dp
+    var justHeight = 0.0.dp
 
     Container(
-        width = containerWidthDp.dp,
-        height = containerHeightDp.dp
+        width = containerWidth,
+        height = containerHeight
     ) {
         if(containerAspect>imageAspect)
         {
-            justWidth = containerWidthDp.toDouble()*(imageAspect/containerAspect)
-            justHeight = containerHeightDp.toDouble()
+            justWidth = containerWidth.times(imageAspect/containerAspect)
+            justHeight = containerHeight
         } else {
-            justWidth = containerWidthDp.toDouble()
-            justHeight = containerHeightDp.toDouble()*(containerAspect/imageAspect)
+            justWidth = containerWidth
+            justHeight = containerHeight.times(containerAspect/imageAspect)
         }
 
-
-        Log.i("DrawImageFitCenter","imageWidth: ${imageWidth}")
-        Log.i("DrawImageFitCenter","imageHeight: ${imageHeight}")
+        Log.i("DrawImageFitCenter","imageWidth: ${image.width.dp}")
+        Log.i("DrawImageFitCenter","imageHeight: ${image.height.dp}")
         Log.i("DrawImageFitCenter","imageAspect: ${imageAspect}")
-        Log.i("DrawImageFitCenter","containerWidthDp: ${containerWidthDp}")
-        Log.i("DrawImageFitCenter","containerHeightDp: ${containerHeightDp}")
+        Log.i("DrawImageFitCenter","containerWidthDp: ${containerWidth}")
+        Log.i("DrawImageFitCenter","containerHeightDp: ${containerHeight}")
         Log.i("DrawImageFitCenter","containerAspect: ${containerAspect}")
         Log.i("DrawImageFitCenter","justWidth: ${justWidth}")
         Log.i("DrawImageFitCenter","justHeight: ${justHeight}")
 
         Container(
-            width = justWidth.dp,
-            height = justHeight.dp
+            width = justWidth,
+            height = justHeight
         ) {
             DrawImage(
                 image = image,

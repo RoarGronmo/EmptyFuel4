@@ -49,12 +49,15 @@ val appColors = MaterialColors(
 )
 
 val appTypography = MaterialTypography(
+    /*
     h1 = TextStyle(fontFamily = FontFamily("RobotoCondensed"),
         fontWeight = FontWeight.W100,
         fontSize = 96.sp),
     h2 = TextStyle(fontFamily = FontFamily("RobotoCondensed"),
         fontWeight = FontWeight.W100,
         fontSize = 60.sp)
+
+     */
 )
 
 @Composable
